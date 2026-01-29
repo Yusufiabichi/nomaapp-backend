@@ -29,14 +29,17 @@ const userSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    trim: true
+    required: [true, 'Phone number is required'],
+    trim: true,
+    maxlength: [11, 'Phone number must be 11 digits'],
+    unique: true
   },
   role: {
     type: String,
     enum: ['farmer', 'agronomist', 'admin'],
     default: 'farmer'
   },
-  
+
   isActive: {
     type: Boolean,
     default: true

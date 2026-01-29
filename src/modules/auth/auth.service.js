@@ -25,22 +25,22 @@ class AuthService {
    * Register new user
    */
   async register(userData) {
-    // Check if email already exists
-    const existingUser = await User.findOne({ email: userData.email });
+    // Check if phone already exists
+    const existingUser = await User.findOne({ phone: userData.phone });
     if (existingUser) {
-      throw new AppError(409, 'EMAIL_EXISTS', 'Email already registered');
+      throw new AppError(409, 'EMAIL_EXISTS', 'User already registered');
     }
 
     // Create user
     const user = await User.create({
-      email: userData.email,
+      // email: userData.email,
       password: userData.password,
       name: userData.name,
       phone: userData.phone,
       role: userData.role || 'farmer'
     });
 
-    logger.info('User registered', { userId: user._id, email: user.email });
+    logger.info('User registered', { userId: user._id, phone: user.phone });
 
     // Generate token
     const token = this.generateToken(user._id);
@@ -54,12 +54,12 @@ class AuthService {
   /**
    * Login user
    */
-  async login(email, password) {
+  async login(phone, password) {
     // Find user with password field
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ phone }).select('+password');
     
     if (!user) {
-      throw new AppError(401, 'INVALID_CREDENTIALS', 'Invalid email or password');
+      throw new AppError(401, 'INVALID_CREDENTIALS', 'Invalid phone or password');
     }
 
     if (!user.isActive) {
@@ -76,7 +76,7 @@ class AuthService {
     user.lastLogin = new Date();
     await user.save({ validateBeforeSave: false });
 
-    logger.info('User logged in', { userId: user._id, email: user.email });
+    logger.info('User logged in', { userId: user._id, phone: user.phone });
 
     // Generate token
     const token = this.generateToken(user._id);
