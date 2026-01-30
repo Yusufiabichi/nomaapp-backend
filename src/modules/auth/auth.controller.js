@@ -21,10 +21,10 @@ class AuthController {
         throw new AppError(400, 'VALIDATION_ERROR', 'Validation failed', errors.array());
       }
 
-      const { email, password, name, phone, role } = req.body;
+      const { password, name, phone, role } = req.body;
       
       const result = await authService.register({
-        email,
+        // email,
         password,
         name,
         phone,
@@ -49,9 +49,9 @@ class AuthController {
         throw new AppError(400, 'VALIDATION_ERROR', 'Validation failed', errors.array());
       }
 
-      const { email, password } = req.body;
+      const { phone, password } = req.body;
       
-      const result = await authService.login(email, password);
+      const result = await authService.login(phone, password);
 
       return successResponse(res, 200, result, 'Login successful');
 

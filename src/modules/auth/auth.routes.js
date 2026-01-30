@@ -12,10 +12,10 @@ const router = express.Router();
 
 // Validation rules
 const registerValidation = [
-  body('email')
-    .isEmail()
-    .withMessage('Please provide a valid email')
-    .normalizeEmail(),
+  // body('email')
+  //   .isEmail()
+  //   .withMessage('Please provide a valid email')
+  //   .normalizeEmail(),
   body('password')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters')
@@ -28,7 +28,8 @@ const registerValidation = [
     .isLength({ max: 100 })
     .withMessage('Name cannot exceed 100 characters'),
   body('phone')
-    .optional()
+    .notEmpty()
+    .withMessage('Phone number is required')
     .trim()
     .isMobilePhone()
     .withMessage('Please provide a valid phone number'),
@@ -39,10 +40,10 @@ const registerValidation = [
 ];
 
 const loginValidation = [
-  body('email')
-    .isEmail()
-    .withMessage('Please provide a valid email')
-    .normalizeEmail(),
+  body('phone')
+    .isMobilePhone()
+    .withMessage('Please provide a valid phone number'),
+    // .normalizeEmail(),
   body('password')
     .notEmpty()
     .withMessage('Password is required')
