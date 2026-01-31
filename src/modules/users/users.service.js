@@ -26,7 +26,7 @@ class UsersService {
    */
   async updateProfile(userId, updateData) {
     // Remove fields that shouldn't be updated via this method
-    const { password, role, isActive, email, ...allowedUpdates } = updateData;
+    const { password, role, isActive, phone, ...allowedUpdates } = updateData;
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -62,7 +62,7 @@ class UsersService {
     if (search) {
       filter.$or = [
         { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } }
+        { phone: { $regex: search, $options: 'i' } }
       ];
     }
 
