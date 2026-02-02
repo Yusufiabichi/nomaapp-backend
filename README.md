@@ -39,12 +39,15 @@ AI-powered crop disease and pest diagnosis platform backend, designed for offlin
 
 Install dependencies:
 
-npm install 2.
-Create environment file:
+npm install
 
-cp .env.example .env 3. 4. Configure environment variables in .env
+2. Create environment file:
 
-Start the server:
+   cp .env.example .env
+
+3. Configure environment variables in .env
+
+4. Start the server:
 
 # Development
 
@@ -52,46 +55,47 @@ npm run dev
 
 # Production
 
-npm start 5.
-API Endpoints
-Authentication
-● POST /api/auth/register - Register new user
-● POST /api/auth/login - Login user
-● POST /api/auth/change-password - Change password
-● GET /api/auth/me - Get current user
-Users
-● GET /api/users/profile - Get profile
-● PUT /api/users/profile - Update profile
-● DELETE /api/users/account - Deactivate account
-Farms
-● POST /api/farms - Create farm
-● GET /api/farms - Get all farms
-● GET /api/farms/:id - Get farm by ID
-● PUT /api/farms/:id - Update farm
-● DELETE /api/farms/:id - Delete farm
-Scans
-● POST /api/scans - Create scan with image
-● GET /api/scans - Get all scans
-● GET /api/scans/stats - Get scan statistics
-● GET /api/scans/:id - Get scan by ID
-● POST /api/scans/:id/retry - Retry failed diagnosis
-● DELETE /api/scans/:id - Delete scan
-Sync (Offline Support)
-● POST /api/sync/push - Push offline changes
-● GET /api/sync/pull - Pull changes since last sync
-Admin
-● GET /api/admin/dashboard - System statistics
-● PUT /api/admin/users/:id/role - Update user role
-● PUT /api/admin/users/:id/toggle-status - Toggle user status
-● GET /api/admin/scans/failed - Get failed scans
-● POST /api/admin/scans/:id/retry - Admin retry diagnosis
-Deployment
-Render
+npm start
+
+5. API Endpoints
+   Authentication
+   ● POST /api/auth/register - Register new user
+   ● POST /api/auth/login - Login user
+   ● POST /api/auth/change-password - Change password
+   ● GET /api/auth/me - Get current user
+   Users
+   ● GET /api/users/profile - Get profile
+   ● PUT /api/users/profile - Update profile
+   ● DELETE /api/users/account - Deactivate account
+   Farms
+   ● POST /api/farms - Create farm
+   ● GET /api/farms - Get all farms
+   ● GET /api/farms/:id - Get farm by ID
+   ● PUT /api/farms/:id - Update farm
+   ● DELETE /api/farms/:id - Delete farm
+   Scans
+   ● POST /api/scans - Create scan with image
+   ● GET /api/scans - Get all scans
+   ● GET /api/scans/stats - Get scan statistics
+   ● GET /api/scans/:id - Get scan by ID
+   ● POST /api/scans/:id/retry - Retry failed diagnosis
+   ● DELETE /api/scans/:id - Delete scan
+   Sync (Offline Support)
+   ● POST /api/sync/push - Push offline changes
+   ● GET /api/sync/pull - Pull changes since last sync
+   Admin
+   ● GET /api/admin/dashboard - System statistics
+   ● PUT /api/admin/users/:id/role - Update user role
+   ● PUT /api/admin/users/:id/toggle-status - Toggle user status
+   ● GET /api/admin/scans/failed - Get failed scans
+   ● POST /api/admin/scans/:id/retry - Admin retry diagnosis
+   Deployment
+   Render
 
 1. Create new Web Service
-2. Connect GitHub repository
-3. Set environment variables
-4. Deploy
+1. Connect GitHub repository
+1. Set environment variables
+1. Deploy
    Cloud Run
 
 # Build container
