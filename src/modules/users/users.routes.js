@@ -33,6 +33,8 @@ const updateProfileValidation = [
 router.get('/profile', usersController.getProfile);
 router.put('/profile', updateProfileValidation, usersController.updateProfile);
 router.delete('/account', usersController.deactivateAccount);
+// implement createAccount in the usersController
+router.post('/user', usersController.createAccount);
 
 // Admin routes
 router.get('/', authorize('admin'), usersController.getAllUsers);
