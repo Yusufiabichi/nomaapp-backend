@@ -10,14 +10,28 @@ const logger = require('./utils/logger');
 
 const startServer = async () => {
   try {
-    // Connect to MongoDB
-    await connectDatabase();
-    logger.info('Database connected successfully');
-
     // Start HTTP server
     const server = app.listen(env.port, () => {
       logger.info(`Server running in ${env.nodeEnv} mode on port ${env.port}`);
     });
+
+    // Connect to MongoDB after the server is listening so development startup
+    // doesn't hard-fail on transient or local DNS issues.
+    connectDatabase()
+      .then(() => {
+        logger.info('Database connected successfully');
+      })
+      .catch((error) => {
+        if (env.nodeEnv === 'production') {
+          logger.error('Failed to connect to MongoDB in production. Shutting down.', error);
+          server.close(() => process.exit(1));
+          return;
+        }
+
+        logger.warn(
+          'Starting without a database connection. Check MONGODB_URI or local DNS if database-backed routes fail.'
+        );
+      });
     
     // Graceful shutdown handlers
     const gracefulShutdown = (signal) => {

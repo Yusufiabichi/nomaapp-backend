@@ -4,6 +4,7 @@
  */
 
 const usersService = require('./users.service');
+const authService = require('../auth/auth.service');
 const { successResponse, paginatedResponse } = require('../../utils/response');
 const { validationResult } = require('express-validator');
 const { AppError } = require('../../middlewares/error.middleware');
@@ -74,6 +75,32 @@ class UsersController {
     try {
       await usersService.deactivateAccount(req.user._id);
       return successResponse(res, 200, null, 'Account deactivated successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * POST /api/users/user
+   * Create a user account
+   */
+  async createAccount(req, res, next) {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        throw new AppError(400, 'VALIDATION_ERROR', 'Validation failed', errors.array());
+      }
+
+      const { password, name, phone, role } = req.body;
+
+      const result = await authService.register({
+        password,
+        name,
+        phone,
+        role
+      });
+
+      return successResponse(res, 201, result, 'Account created successfully');
     } catch (error) {
       next(error);
     }

@@ -70,7 +70,6 @@ const userSchema = new mongoose.Schema({
 });
 
 // Index for faster queries
-userSchema.index({ phone: 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ isActive: 1 });
 
