@@ -28,7 +28,7 @@ class AuthService {
     // Check if phone already exists
     const existingUser = await User.findOne({ phone: userData.phone });
     if (existingUser) {
-      throw new AppError(409, 'EMAIL_EXISTS', 'User already registered');
+      throw new AppError(409, 'PHONE_EXISTS', 'Phone number already registered');
     }
 
     // Create user

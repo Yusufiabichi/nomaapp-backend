@@ -35,8 +35,8 @@ const registerValidation = [
     .withMessage('Please provide a valid phone number'),
   body('role')
     .optional()
-    .isIn(['farmer', 'agronomist'])
-    .withMessage('Role must be farmer or agronomist')
+    .isIn(['farmer', 'expert', 'supplier'])
+    .withMessage('Role must be farmer, expert, or supplier')
 ];
 
 const loginValidation = [

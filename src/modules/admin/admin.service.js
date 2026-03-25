@@ -64,7 +64,7 @@ class AdminService {
    * Update user role
    */
   async updateUserRole(userId, newRole) {
-    if (!['farmer', 'agronomist', 'admin'].includes(newRole)) {
+    if (!['farmer', 'expert', 'supplier', 'admin'].includes(newRole)) {
       throw new AppError(400, 'INVALID_ROLE', 'Invalid role specified');
     }
 

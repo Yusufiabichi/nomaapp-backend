@@ -18,8 +18,8 @@ router.use(authorize('admin'));
 const updateRoleValidation = [
   param('id').isMongoId().withMessage('Invalid user ID'),
   body('role')
-    .isIn(['farmer', 'agronomist', 'admin'])
-    .withMessage('Role must be farmer, agronomist, or admin')
+    .isIn(['farmer', 'expert', 'supplier', 'admin'])
+    .withMessage('Role must be farmer, expert, supplier, or admin')
 ];
 
 const userIdValidation = [
