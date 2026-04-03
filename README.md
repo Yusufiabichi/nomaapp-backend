@@ -59,13 +59,13 @@ npm start
 
 5. API Endpoints
    Authentication
-   ● POST /api/auth/register - Register new user
-   ● POST /api/auth/login - Login user
+   ● POST /api/auth/register - Register new user D
+   ● POST /api/auth/login - Login user D
    ● POST /api/auth/change-password - Change password
    ● GET /api/auth/me - Get current user
    Users
-   ● GET /api/users/profile - Get profile
-   ● PUT /api/users/profile - Update profile
+   ● GET /api/users/profile - Get profile D
+   ● PUT /api/users/profile - Update profile D
    ● DELETE /api/users/account - Deactivate account
    Farms
    ● POST /api/farms - Create farm

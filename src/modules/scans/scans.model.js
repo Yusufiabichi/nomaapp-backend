@@ -10,6 +10,10 @@ const diagnosisSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  cropType: {
+    type: String,
+    trim: true
+  },
   confidence: {
     type: Number,
     min: 0,
@@ -22,9 +26,9 @@ const diagnosisSchema = new mongoose.Schema({
   recommendations: [{
     type: String
   }],
-  alternativeDiagnoses: [{
-    disease: String,
-    confidence: Number
+  futurePrevention: [{
+    type: String,
+    trim: true,
   }]
 }, { _id: false });
 
@@ -35,11 +39,11 @@ const scanSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  farmId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Farm',
-    index: true
-  },
+  // farmId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Farm',
+  //   index: true
+  // },
   // Image storage info
   image: {
     provider: {
@@ -59,16 +63,6 @@ const scanSchema = new mongoose.Schema({
   cropType: {
     type: String,
     trim: true
-  },
-  symptoms: {
-    type: String,
-    trim: true,
-    maxlength: [500, 'Symptoms description cannot exceed 500 characters']
-  },
-  notes: {
-    type: String,
-    trim: true,
-    maxlength: [500, 'Notes cannot exceed 500 characters']
   },
   // Scan status
   status: {

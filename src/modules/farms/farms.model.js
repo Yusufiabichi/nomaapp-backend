@@ -71,3 +71,4 @@ farmSchema.virtual('scans', {
 });
 
 module.exports = mongoose.model('Farm', farmSchema);
+
