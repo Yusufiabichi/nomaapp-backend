@@ -18,22 +18,6 @@ const pushValidation = [
   body('changes')
     .isObject()
     .withMessage('Changes must be an object'),
-  body('changes.farms')
-    .optional()
-    .isObject()
-    .withMessage('Farms changes must be an object'),
-  body('changes.farms.created')
-    .optional()
-    .isArray()
-    .withMessage('Created farms must be an array'),
-  body('changes.farms.updated')
-    .optional()
-    .isArray()
-    .withMessage('Updated farms must be an array'),
-  body('changes.farms.deleted')
-    .optional()
-    .isArray()
-    .withMessage('Deleted farms must be an array'),
   body('changes.scans')
     .optional()
     .isObject()

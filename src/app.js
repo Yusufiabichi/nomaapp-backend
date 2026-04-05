@@ -16,8 +16,8 @@ const { errorHandler, notFoundHandler } = require('./middlewares/error.middlewar
 // Import routes
 const authRoutes = require('./modules/auth/auth.routes');
 const usersRoutes = require('./modules/users/users.routes');
-const farmsRoutes = require('./modules/farms/farms.routes');
 const scansRoutes = require('./modules/scans/scans.routes');
+const recommendationRoutes = require('./modules/recommendations/recommendations.routes');
 const syncRoutes = require('./modules/sync/sync.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
 
@@ -74,8 +74,8 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
-app.use('/api/farms', farmsRoutes);
 app.use('/api/scans', scansRoutes);
+app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/admin', adminRoutes);
 

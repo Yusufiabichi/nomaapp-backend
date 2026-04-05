@@ -25,7 +25,6 @@ class SyncController {
 
       logger.info('Sync push received', { 
         userId: req.user._id,
-        farms: changes.farms ? Object.keys(changes.farms).length : 0,
         scans: changes.scans ? Object.keys(changes.scans).length : 0
       });
 

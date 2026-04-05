@@ -1,7 +1,6 @@
-/**
- * Scans Routes
- * Defines scan-related endpoints
- */
+
+// Scans Routes
+// Defines scan-related endpoints
 
 const express = require('express');
 const { body, param, query } = require('express-validator');
@@ -16,15 +15,16 @@ router.use(authenticate);
 
 // Validation rules
 const scanValidation = [
-  body('farmId')
-    .optional()
-    .isMongoId()
-    .withMessage('Invalid farm ID'),
   body('cropType')
     .optional()
     .trim()
     .isLength({ max: 100 })
     .withMessage('Crop type cannot exceed 100 characters'),
+  body('language')
+    .optional()
+    .trim()
+    .isIn(['en', 'ha'])
+    .withMessage('Language must be en or ha'),
   body('symptoms')
     .optional()
     .trim()

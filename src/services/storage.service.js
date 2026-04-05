@@ -1,7 +1,7 @@
-/**
- * Storage Service
- * Abstraction layer for cloud storage (S3 / Cloudinary)
- */
+
+//  Storage Service
+//  Abstraction layer for cloud storage (S3 / Cloudinary)
+
 
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');

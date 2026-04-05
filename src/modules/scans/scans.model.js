@@ -21,7 +21,7 @@ const diagnosisSchema = new mongoose.Schema({
   },
   severity: {
     type: String,
-    enum: ['low', 'medium', 'high', 'critical']
+    enum: ['low', 'medium', 'high']
   },
   recommendations: [{
     type: String
@@ -39,11 +39,10 @@ const scanSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  // farmId: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Farm',
-  //   index: true
-  // },
+  cropType: {
+    type: String,
+    trim: true
+  },
   // Image storage info
   image: {
     provider: {
@@ -59,11 +58,7 @@ const scanSchema = new mongoose.Schema({
     key: String,       // For S3
     bucket: String     // For S3
   },
-  // Scan metadata
-  cropType: {
-    type: String,
-    trim: true
-  },
+  
   // Scan status
   status: {
     type: String,
@@ -109,6 +104,5 @@ const scanSchema = new mongoose.Schema({
 // Compound indexes
 scanSchema.index({ userId: 1, status: 1, createdAt: -1 });
 scanSchema.index({ userId: 1, isDeleted: 1, createdAt: -1 });
-scanSchema.index({ farmId: 1, isDeleted: 1 });
 
 module.exports = mongoose.model('Scan', scanSchema);

@@ -1,7 +1,7 @@
-/**
- * AI Service
- * Handles communication with external FastAPI AI inference service
- */
+
+//  AI Service
+//  Handles communication with external FastAPI AI inference service
+
 
 const axios = require('axios');
 const env = require('../config/env');
@@ -53,9 +53,9 @@ class AIService {
     );
   }
 
-  /**
-   * Send image for crop disease diagnosis
-   */
+  
+  // Send image for crop disease diagnosis
+  
   async diagnose(imageUrl, metadata = {}) {
     try {
       const response = await this.client.post('/api/v1/diagnose', {
@@ -86,9 +86,9 @@ class AIService {
     }
   }
 
-  /**
-   * Check AI service health
-   */
+  
+  //  Check AI service health
+  
   async healthCheck() {
     try {
       const response = await this.client.get('/health', { timeout: 5000 });
@@ -106,9 +106,9 @@ class AIService {
     }
   }
 
-  /**
-   * Handle AI service errors gracefully
-   */
+  
+  //  Handle AI service errors gracefully
+  
   handleAIError(error) {
     if (error.code === 'ECONNABORTED') {
       return {
