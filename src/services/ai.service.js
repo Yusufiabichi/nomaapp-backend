@@ -63,7 +63,6 @@ class AIService {
         metadata: {
           crop_type: metadata.cropType,
           location: metadata.location,
-          symptoms: metadata.symptoms,
           timestamp: new Date().toISOString()
         }
       });
