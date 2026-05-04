@@ -69,7 +69,7 @@ class AuthService {
     // Verify password
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
-      throw new AppError(401, 'INVALID_CREDENTIALS', 'Invalid email or password');
+      throw new AppError(401, 'INVALID_CREDENTIALS', 'Invalid phone number or password');
     }
 
     // Update last login
