@@ -1,7 +1,7 @@
-/**
- * Database Configuration
- * Handles MongoDB connection with retry logic
- */
+
+  //Database Configuration
+  //Handles MongoDB connection with retry logic
+ 
 
 const mongoose = require('mongoose');
 const env = require('./env');

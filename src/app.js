@@ -1,7 +1,7 @@
-/**
- * Express Application Configuration
- * Sets up middleware, routes, and error handling
- */
+
+// Express Application Configuration
+// Sets up middleware, routes, and error handling
+
 
 const express = require('express');
 const cors = require('cors');
@@ -20,6 +20,8 @@ const scansRoutes = require('./modules/scans/scans.routes');
 const recommendationRoutes = require('./modules/recommendations/recommendations.routes');
 const syncRoutes = require('./modules/sync/sync.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 const app = express();
 
@@ -29,6 +31,9 @@ app.use(cors({
   origin: env.nodeEnv === 'production' ? env.allowedOrigins : '*',
   credentials: true
 }));
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // Rate limiting
 const limiter = rateLimit({

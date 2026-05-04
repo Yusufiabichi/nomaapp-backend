@@ -1,7 +1,7 @@
-/**
- * Auth Routes
- * Defines authentication-related endpoints
- */
+
+// Auth Routes
+// Defines authentication-related endpoints
+
 
 const express = require('express');
 const { body } = require('express-validator');
@@ -60,8 +60,135 @@ const changePasswordValidation = [
     .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number')
 ];
 
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     description: Creates a new user account with name, phone, password, and role
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - phone
+ *               - password
+ *               - role
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Yusuf Ibrahim
+ *               phone:
+ *                 type: string
+ *                 example: "08012345678"
+ *               password:
+ *                 type: string
+ *                 example: "securePassword123"
+ *               role:
+ *                 type: string
+ *                 enum: [user, admin]
+ *                 example: user
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User registered successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "64f8a2c1e9b1a2c3d4e5f6g7"
+ *                     name:
+ *                       type: string
+ *                       example: Yusuf Ibrahim
+ *                     phone:
+ *                       type: string
+ *                       example: "08012345678"
+ *                     role:
+ *                       type: string
+ *                       example: user
+ *       400:
+ *         description: Validation error (missing or invalid fields)
+ *       409:
+ *         description: User already exists
+ *       500:
+ *         description: Server error
+ */
 // Routes
 router.post('/register', registerValidation, authController.register);
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login a user
+ *     tags: [Auth]
+ *     description: Authenticates a user with phone and password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - phone
+ *               - password
+ *             properties:
+ *               phone:
+ *                 type: string
+ *                 example: "08012345678"
+ *               password:
+ *                 type: string
+ *                 example: "securePassword123"
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User logged in successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "64f8a2c1e9b1a2c3d4e5f6g7"
+ *                     name:
+ *                       type: string
+ *                       example: Yusuf Ibrahim
+ *                     phone:
+ *                       type: string
+ *                       example: "08012345678"
+ *                     role:
+ *                       type: string
+ *                       example: user
+ *       400:
+ *         description: Validation error (missing or invalid fields)
+ *       409:
+ *         description: User already exists
+ *       500:
+ *         description: Server error
+ */
 router.post('/login', loginValidation, authController.login);
 router.post('/change-password', authenticate, changePasswordValidation, authController.changePassword);
 router.get('/me', authenticate, authController.getMe);

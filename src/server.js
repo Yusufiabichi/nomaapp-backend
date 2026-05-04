@@ -1,12 +1,13 @@
-/**
- * Server Entry Point
- * Initializes database connection and starts the HTTP server
- */
+
+// Server Entry Point
+// Initializes database connection and starts the HTTP server
+
 
 const app = require('./app');
 const { connectDatabase } = require('./config/database');
 const env = require('./config/env');
 const logger = require('./utils/logger');
+const express = require("express");
 
 const startServer = async () => {
   try {
