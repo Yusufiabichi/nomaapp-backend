@@ -52,35 +52,79 @@ const createUserValidation = [
     .isIn(['farmer', 'expert', 'supplier'])
     .withMessage('Role must be farmer, expert, or supplier')
 ];
-
 /**
  * @swagger
  * /api/users/profile:
  *   get:
- *     summary: Get user profile
- *     description: Returns the profile of the authenticated user
+ *     summary: Get authenticated user profile
+ *     tags: [Users]
+ *     description: Returns the profile information of the currently logged-in user
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Success
- *
+ *         description: User profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "6634d9c91c6f4f0012345678"
+ *                     name:
+ *                       type: string
+ *                       example: Yusuf Ibrahim
+ *                     phone:
+ *                       type: string
+ *                       example: "08012345678"
+ *                     role:
+ *                       type: string
+ *                       example: user
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
+// User routes
+router.get('/profile', usersController.getProfile);
+/**
+ * @swagger
+ * /api/users/profile:
+ *   put:
+ *     summary: Update authenticated user profile
+ *     tags: [Users]
+ *     description: Updates the logged-in user's profile information
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - phone
- *               - password
  *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Yusuf Ibrahim
  *               phone:
  *                 type: string
  *                 example: "08012345678"
  *               password:
  *                 type: string
- *                 example: "securePassword123"
+ *                 example: "newSecurePassword123"
  *     responses:
  *       200:
- *         description: Profile fetched successfully
+ *         description: Profile updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -91,32 +135,43 @@ const createUserValidation = [
  *                   example: true
  *                 message:
  *                   type: string
- *                   example: Profile fetched successfully
+ *                   example: Profile updated successfully
  *                 data:
  *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                       example: "64f8a2c1e9b1a2c3d4e5f6g7"
- *                     name:
- *                       type: string
- *                       example: Yusuf Ibrahim
- *                     phone:
- *                       type: string
- *                       example: "08012345678"
- *                     role:
- *                       type: string
- *                       example: user
  *       400:
- *         description: Validation error (missing or invalid fields)
- *       409:
- *         description: User already exists
- *       500:
- *         description: Server error
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
  */
-// User routes
-router.get('/profile', usersController.getProfile);
 router.put('/profile', updateProfileValidation, usersController.updateProfile);
+/**
+ * @swagger
+ * /api/users/account:
+ *   delete:
+ *     summary: Deactivate user account
+ *     tags: [Users]
+ *     description: Deactivates or soft deletes the authenticated user's account
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Account deactivated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Account deactivated successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
 router.delete('/account', usersController.deactivateAccount);
 // router.post("/register", registerUser);
 router.post('/user', createUserValidation, usersController.createAccount);

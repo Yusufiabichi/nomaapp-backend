@@ -1,7 +1,7 @@
-/**
- * Sync Controller
- * Handles HTTP requests for offline synchronization
- */
+
+// Sync Controller
+// Handles HTTP requests for offline synchronization
+
 
 const syncService = require('../../services/sync.service');
 const { successResponse } = require('../../utils/response');
@@ -10,10 +10,10 @@ const { AppError } = require('../../middlewares/error.middleware');
 const logger = require('../../utils/logger');
 
 class SyncController {
-  /**
-   * POST /api/sync/push
-   * Receive batch changes from mobile device
-   */
+  
+  // POST /api/sync/push
+  // Receive batch changes from mobile device
+  
   async push(req, res, next) {
     try {
       const errors = validationResult(req);
@@ -36,10 +36,10 @@ class SyncController {
     }
   }
 
-  /**
-   * GET /api/sync/pull
-   * Send changes to mobile device since last sync
-   */
+  
+  // GET /api/sync/pull
+  // Send changes to mobile device since last sync
+  
   async pull(req, res, next) {
     try {
       const { lastPulledAt } = req.query;

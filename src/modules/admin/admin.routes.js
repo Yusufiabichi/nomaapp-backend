@@ -1,7 +1,5 @@
-/**
- * Admin Routes
- * Defines administrative endpoints
- */
+// Admin Routes
+// Defines administrative endpoints
 
 const express = require('express');
 const { body, param } = require('express-validator');
@@ -31,7 +29,6 @@ const scanIdValidation = [
 ];
 
 // Routes
-router.get('/dashboard', adminController.getDashboard);
 router.put('/users/:id/role', updateRoleValidation, adminController.updateUserRole);
 router.put('/users/:id/toggle-status', userIdValidation, adminController.toggleUserStatus);
 router.get('/scans/failed', adminController.getFailedScans);

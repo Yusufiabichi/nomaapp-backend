@@ -1,7 +1,7 @@
-/**
- * Auth Service
- * Business logic for authentication operations
- */
+
+// Auth Service
+// Business logic for authentication operations
+
 
 const jwt = require('jsonwebtoken');
 const User = require('./auth.model');
@@ -21,9 +21,9 @@ class AuthService {
     );
   }
 
-  /**
-   * Register new user
-   */
+  
+  // Register new user
+  
   async register(userData) {
     // Check if phone already exists
     const existingUser = await User.findOne({ phone: userData.phone });
@@ -51,9 +51,9 @@ class AuthService {
     };
   }
 
-  /**
-   * Login user
-   */
+  
+  // Login user
+  
   async login(phone, password) {
     // Find user with password field
     const user = await User.findOne({ phone }).select('+password');
@@ -87,9 +87,9 @@ class AuthService {
     };
   }
 
-  /**
-   * Change password
-   */
+  
+  // Change password
+  
   async changePassword(userId, currentPassword, newPassword) {
     const user = await User.findById(userId).select('+password');
     

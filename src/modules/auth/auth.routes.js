@@ -190,6 +190,65 @@ router.post('/register', registerValidation, authController.register);
  *         description: Server error
  */
 router.post('/login', loginValidation, authController.login);
+/**
+ * @swagger
+ * /api/auth/change-password:
+ *   post:
+ *     summary: Change user password
+ *     tags: [Auth]
+ *     description: Allows a logged-in user to change their password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - phone
+ *               - password
+ *             properties:
+ *               phone:
+ *                 type: string
+ *                 example: "08012345678"
+ *               password:
+ *                 type: string
+ *                 example: "securePassword123"
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User logged in successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "64f8a2c1e9b1a2c3d4e5f6g7"
+ *                     name:
+ *                       type: string
+ *                       example: Yusuf Ibrahim
+ *                     phone:
+ *                       type: string
+ *                       example: "08012345678"
+ *                     role:
+ *                       type: string
+ *                       example: user
+ *       400:
+ *         description: Validation error (missing or invalid fields)
+ *       409:
+ *         description: User already exists
+ *       500:
+ *         description: Server error
+ */
 router.post('/change-password', authenticate, changePasswordValidation, authController.changePassword);
 router.get('/me', authenticate, authController.getMe);
 
