@@ -25,11 +25,6 @@ const scanValidation = [
     .trim()
     .isIn(['en', 'ha'])
     .withMessage('Language must be en or ha'),
-  body('symptoms')
-    .optional()
-    .trim()
-    .isLength({ max: 500 })
-    .withMessage('Symptoms description cannot exceed 500 characters'),
   body('notes')
     .optional()
     .trim()
@@ -40,7 +35,6 @@ const scanValidation = [
 const scanIdValidation = [
   param('id').isMongoId().withMessage('Invalid scan ID')
 ];
-
 
 /**
  * @swagger
