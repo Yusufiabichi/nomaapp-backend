@@ -58,7 +58,7 @@ class AIService {
   
   async diagnose(imageUrl, metadata = {}) {
     try {
-      const response = await this.client.post('/api/v1/diagnose', {
+      const response = await this.client.post('/ai/infer', {
         image_url: imageUrl,
         metadata: {
           crop_type: metadata.cropType,
