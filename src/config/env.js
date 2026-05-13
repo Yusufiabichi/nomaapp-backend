@@ -1,7 +1,7 @@
-/**
- * Environment Configuration
- * Centralizes all environment variables with validation
- */
+
+// Environment Configuration
+// Centralizes all environment variables with validation
+
 
 require('dotenv').config();
 

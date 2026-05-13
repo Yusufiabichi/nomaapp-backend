@@ -72,7 +72,8 @@ class ScansService {
         logger.info('Diagnosis completed', { 
           scanId, 
           disease: result.diagnosis.disease,
-          confidence: result.diagnosis.confidence 
+          confidence: result.diagnosis.confidence,
+          severity: result.diagnosis.severity
         });
       } else {
 
@@ -85,6 +86,10 @@ class ScansService {
           retryCount: (scan.error?.retryCount || 0) + 1,
           lastRetryAt: new Date()
         };
+
+        if (result.diagnosis.confidence < 0.6) {
+          scan.diagnosis.lowConfidence = true;
+        }
 
         logger.warn('AI diagnosis failed', {
           scanId,

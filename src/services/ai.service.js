@@ -6,6 +6,7 @@
 const axios = require('axios');
 const env = require('../config/env');
 const logger = require('../utils/logger');
+const FormData = require('form-data');
 const { AppError } = require('../middlewares/error.middleware');
 
 class AIService {
@@ -14,7 +15,6 @@ class AIService {
       baseURL: env.aiServiceUrl,
       timeout: env.aiServiceTimeout,
       headers: {
-        'Content-Type': 'application/json',
         ...(env.aiServiceApiKey && { 'X-API-Key': env.aiServiceApiKey })
       }
     });
@@ -46,7 +46,8 @@ class AIService {
         logger.error('AI Service Error:', {
           status: error.response?.status,
           message: error.message,
-          duration: `${duration}ms`
+          duration: `${duration}ms`,
+          data: error.response?.data
         });
         return Promise.reject(error);
       }
@@ -58,12 +59,31 @@ class AIService {
   
   async diagnose(imageUrl, metadata = {}) {
     try {
-      const response = await this.client.post('/ai/infer', {
-        image_url: imageUrl,
-        metadata: {
-          crop_type: metadata.cropType,
-          location: metadata.location,
-          timestamp: new Date().toISOString()
+      // 1. Fetch the image from cloud storage as a buffer
+      const imageResponse = await axios.get(imageUrl, {
+        responseType: 'arraybuffer',
+        timeout: 10000
+      });
+
+      const imageBuffer = Buffer.from(imageResponse.data);
+
+      // Extract filename + content type from URL
+      const filename = imageUrl.split('/').pop().split('?')[0] || 'scan.jpg';
+      const contentType = imageResponse.headers['content-type'] || 'image/jpeg';
+
+      // 2. Build multipart/form-data — matches FastAPI's expected fields
+      const form = new FormData();
+      form.append('image_file', imageBuffer, {
+        filename,
+        contentType
+      });
+      form.append('crop_type', (metadata.cropType || 'unknown').toLowerCase());
+
+      // 3. POST with correct headers
+      const response = await this.client.post('/ai/infer', form, {
+        headers: {
+          ...form.getHeaders(),
+          ...(env.aiServiceApiKey && { 'X-API-Key': env.aiServiceApiKey })
         }
       });
 
@@ -72,9 +92,7 @@ class AIService {
         diagnosis: {
           disease: response.data.disease,
           confidence: response.data.confidence,
-          severity: response.data.severity,
-          recommendations: response.data.recommendations || [],
-          alternativeDiagnoses: response.data.alternative_diagnoses || []
+          severity: response.data.severity
         },
         processingTime: response.data.processing_time,
         modelVersion: response.data.model_version
@@ -130,6 +148,7 @@ class AIService {
         }
       };
     }
+    
 
     if (error.response) {
       const status = error.response.status;
@@ -144,6 +163,17 @@ class AIService {
           }
         };
       }
+
+      if (status === 400) {
+      return {
+        success: false,
+        error: {
+          code: 'AI_BAD_REQUEST',
+          message: error.response.data?.detail || 'Bad request to AI service',
+          retryable: false
+        }
+      };
+    }
 
       if (status >= 500) {
         return {
