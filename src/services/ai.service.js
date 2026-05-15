@@ -90,13 +90,14 @@ class AIService {
       return {
         success: true,
         diagnosis: {
-          disease: response.data.disease,
+          disease: (response.data.disease).toLowerCase(),
           confidence: response.data.confidence,
           severity: response.data.severity
         },
         processingTime: response.data.processing_time,
         modelVersion: response.data.model_version
       };
+      console.log(response.data.diagnosis);
 
     } catch (error) {
       return this.handleAIError(error);

@@ -12,7 +12,7 @@ const express = require("express");
 const startServer = async () => {
   try {
     // Start HTTP server
-    const server = app.listen(env.port, () => {
+    const server = app.listen(env.port, '0.0.0.0', () => {
       logger.info(`Server running in ${env.nodeEnv} mode on port ${env.port}`);
     });
 
