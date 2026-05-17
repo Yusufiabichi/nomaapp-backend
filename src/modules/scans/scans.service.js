@@ -69,7 +69,7 @@ class ScansService {
         };
         scan.error = undefined;
 
-        logger.info('Diagnosis completed', { 
+        logger.info('Diagnosis completed Successfully', { 
           scanId, 
           disease: result.diagnosis.disease,
           confidence: result.diagnosis.confidence,
