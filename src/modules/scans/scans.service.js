@@ -2,7 +2,6 @@
 // Scans Service
 // Business logic for scan operations and AI integration
 
-
 const Scan = require('./scans.model');
 const storageService = require('../../services/storage.service');
 const aiService = require('../../services/ai.service');
