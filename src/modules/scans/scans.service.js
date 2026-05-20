@@ -68,6 +68,10 @@ class ScansService {
         };
         scan.error = undefined;
 
+        if (result.diagnosis.confidence < 0.6) {
+          scan.diagnosis.lowConfidence = true;
+        }
+
         logger.info('Diagnosis completed Successfully', { 
           scanId, 
           disease: result.diagnosis.disease,
@@ -77,29 +81,49 @@ class ScansService {
       } else {
 
         // Handle AI error
-        scan.status = result.error.retryable ? 'pending' : 'failed';
+        const retryCount = (scan.error?.retryCount || 0) + 1;
+        const MAX_AUTO_RETRIES = 2;
+        const shouldRetry = result.error.retryable && retryCount < MAX_AUTO_RETRIES;
+
+        scan.status = shouldRetry ? 'pending' : 'failed';
         scan.error = {
-          code: result.error.code,
-          message: result.error.message,
-          retryable: result.error.retryable,
-          retryCount: (scan.error?.retryCount || 0) + 1,
+          code: result.error?.code || 'AI_FAILED',
+          message: result.error?.message || 'AI diagnosis failed',
+          retryable: result.error?.retryable ?? true,
+          retryCount,
           lastRetryAt: new Date()
         };
 
-        if (result.diagnosis.confidence < 0.6) {
-          scan.diagnosis.lowConfidence = true;
+        await scan.save();
+
+        if (shouldRetry) {
+          const retryDelay = retryCount * 5000; // 5s after 1st fail, 10s after 2nd
+          logger.info('Scheduling diagnosis retry', { scanId, retryDelay, retryCount });
+          setTimeout(() => {
+            this.processDiagnosis(scanId, language).catch(err => {
+              logger.error('Scheduled retry failed', { scanId, error: err.message });
+            });
+          }, retryDelay);
         }
 
         logger.warn('AI diagnosis failed', {
           scanId,
           errorCode: result.error.code,
-          retryable: result.error.retryable
+          retryable: result.error.retryable,
+          retryCount,
+          willRetry: shouldRetry,
         });
       }
 
       await scan.save();
     } catch (error) {
-      logger.error('Unexpected error during diagnosis', { scanId, error: error.message });
+      logger.error('Unexpected error during diagnosis', { 
+        scanId,
+        error: error.message,
+        stack: error.stack,      
+        response: error.response?.data, 
+        status: error.response?.status,
+      });
       scan.status = 'failed';
       scan.error = {
         code: 'UNEXPECTED_ERROR',
