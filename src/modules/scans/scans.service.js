@@ -7,6 +7,7 @@ const storageService = require('../../services/storage.service');
 const aiService = require('../../services/ai.service');
 const { AppError } = require('../../middlewares/error.middleware');
 const logger = require('../../utils/logger');
+const { getTreatment } = require('../../utils/treatmentLookup');
 
 class ScansService {
   
@@ -58,26 +59,40 @@ class ScansService {
       });
 
       if (result.success) {
+        const { disease, confidence, severity } = result.diagnosis;
 
-        // Update scan with diagnosis
+        const treatment = getTreatment(disease, severity, language, scan.cropType);
+
+        if (!treatment) {
+          logger.warn('No treatment found for disease', { scanId, disease, severity });
+        }
+
         scan.status = 'diagnosed';
-        scan.diagnosis = result.diagnosis;
+        scan.diagnosis = {
+          disease,
+          confidence,
+          severity,
+          name: treatment?.name || disease,
+          recommendations: treatment?.recommendations || [],
+          futurePrevention: treatment?.futurePrevention || [],
+          isFallback: treatment?.isFallback ?? true,
+          language,                              
+        };
         scan.aiMetadata = {
           modelVersion: result.modelVersion,
-          processingTime: result.processingTime
+          processingTime: result.processingTime,
         };
         scan.error = undefined;
 
-        if (result.diagnosis.confidence < 0.6) {
-          scan.diagnosis.lowConfidence = true;
-        }
-
-        logger.info('Diagnosis completed Successfully', { 
-          scanId, 
-          disease: result.diagnosis.disease,
-          confidence: result.diagnosis.confidence,
-          severity: result.diagnosis.severity
+        logger.info('Diagnosis completed successfully', {
+          scanId,
+          disease,
+          confidence,
+          severity,
+          treatmentFound: !treatment?.isFallback,
+          language,
         });
+        
       } else {
 
         // Handle AI error

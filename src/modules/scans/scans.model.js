@@ -10,6 +10,10 @@ const diagnosisSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    trim: true
+  },
   cropType: {
     type: String,
     trim: true
@@ -21,7 +25,16 @@ const diagnosisSchema = new mongoose.Schema({
   },
   severity: {
     type: String,
-    enum: ['low', 'medium', 'high']
+    enum: ['low', 'moderate', 'high']
+  },
+  isFallback:{
+    type: Boolean,
+    default: false
+  },
+  language: {
+    type: String,
+    enum: ['en', 'ha'],
+    default: 'en'
   },
   recommendations: [{
     type: String
