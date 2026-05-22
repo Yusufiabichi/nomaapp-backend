@@ -59,7 +59,12 @@ class ScansService {
       });
 
       if (result.success) {
-        const { disease, confidence, severity } = result.diagnosis;
+        const { disease, confidence } = result.diagnosis;
+
+        const rawSeverity = result.diagnosis.severity?.toLowerCase();
+        const severity = rawSeverity === 'medium' ? 'moderate'
+          : ['low', 'moderate', 'high'].includes(rawSeverity) ? rawSeverity
+          : 'moderate'; // safe fallback
 
         const treatment = getTreatment(disease, severity, language, scan.cropType);
 
