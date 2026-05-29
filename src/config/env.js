@@ -17,6 +17,9 @@ requiredEnvVars.forEach((varName) => {
   }
 });
 
+console.log('AI_SERVICE_URL:', process.env.AI_SERVICE_URL);
+console.log('Using baseURL:', env.aiServiceUrl);
+
 module.exports = {
   // Server
   nodeEnv: process.env.NODE_ENV || 'development',
