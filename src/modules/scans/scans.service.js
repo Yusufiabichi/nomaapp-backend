@@ -7,7 +7,7 @@ const storageService = require('../../services/storage.service');
 const aiService = require('../../services/ai.service');
 const { AppError } = require('../../middlewares/error.middleware');
 const logger = require('../../utils/logger');
-const { getTreatment } = require('../../utils/treatmentLookup');
+const { getTreatment } = require('../../utils/treatmentLookUp');
 
 class ScansService {
   
