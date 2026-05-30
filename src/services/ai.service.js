@@ -11,6 +11,9 @@ const { AppError } = require('../middlewares/error.middleware');
 
 class AIService {
   constructor() {
+    if (!env.aiServiceUrl) {
+      throw new Error("AI_SERVICE_URL is not configured. Check your .env file.");
+    }
     this.client = axios.create({
       baseURL: env.aiServiceUrl,
       timeout: env.aiServiceTimeout,
@@ -59,6 +62,9 @@ class AIService {
   
   async diagnose(imageUrl, metadata = {}) {
     try {
+      if (!env.aiServiceUrl) {
+        throw new AppError("AI_SERVICE_URL is not configured", 500); 
+      }
       // 1. Fetch the image from cloud storage as a buffer
       const imageResponse = await axios.get(imageUrl, {
         responseType: 'arraybuffer',
@@ -79,6 +85,11 @@ class AIService {
       });
       form.append('crop_type', (metadata.cropType || 'unknown').toLowerCase());
 
+      if (!env.aiServiceUrl) {
+        throw new Error("AI_SERVICE_URL is not configured");
+      }
+      console.log('AI_SERVICE_URL:', env.aiServiceUrl);
+
       // 3. POST with correct headers
       const response = await this.client.post('/ai/infer', form, {
         headers: {
@@ -86,6 +97,8 @@ class AIService {
           ...(env.aiServiceApiKey && { 'X-API-Key': env.aiServiceApiKey })
         }
       });
+
+      console.log(response.data.diagnosis);
 
       return {
         success: true,
@@ -97,9 +110,9 @@ class AIService {
         processingTime: response.data.processing_time,
         modelVersion: response.data.model_version
       };
-      console.log(response.data.diagnosis);
 
     } catch (error) {
+      if (error instanceof AppError) throw error; 
       return this.handleAIError(error);
     }
   }

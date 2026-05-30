@@ -33,7 +33,7 @@ module.exports = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   
   // AI Service
-  aiServiceUrl: process.env.AI_SERVICE_URL || 'http://localhost:8000',
+  aiServiceUrl: process.env.AI_SERVICE_URL,
   aiServiceApiKey: process.env.AI_SERVICE_API_KEY || '',
   aiServiceTimeout: parseInt(process.env.AI_SERVICE_TIMEOUT, 10) || 30000,
   
