@@ -40,6 +40,39 @@ const userSchema = new mongoose.Schema({
     default: 'farmer'
   },
 
+  subscription: {
+    plan: {
+      type: String,
+      enum: ['trial', 'free', 'basic', 'premium'],
+      default: 'trial'
+    },
+    status: {
+      type: String,
+      enum: ['active', 'expired', 'cancelled'],
+      default: 'active'
+    },
+    trialStartDate: {
+      type: Date,
+      default: Date.now
+    },
+    trialEndDate: {
+      type: Date,
+      default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+    },
+    currentPeriodEnd: Date,
+    paymentReference: String // Paystack reference
+  },
+
+  usage: {
+    diagnosisCount: { type: Number, default: 0 },
+    diagnosisResetDate: {
+      type: Date,
+      default: () => new Date(new Date().setHours(0,0,0,0)) // midnight today
+    },
+    expertSessionsUsed: { type: Number, default: 0 },
+    expertSessionsResetDate: Date
+  },
+
   isActive: {
     type: Boolean,
     default: true

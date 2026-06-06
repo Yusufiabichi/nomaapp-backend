@@ -5,6 +5,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 const adminController = require('./admin.controller');
 const { authenticate, authorize } = require('../../middlewares/auth.middleware');
+const { requireRole } = require('../../middlewares/subscription.middleware');
 
 const router = express.Router();
 
@@ -27,6 +28,8 @@ const userIdValidation = [
 const scanIdValidation = [
   param('id').isMongoId().withMessage('Invalid scan ID')
 ];
+
+// router.get('/users', authenticate, requireRole('admin'), adminController.getUsers);
 
 // Routes
 router.put('/users/:id/role', updateRoleValidation, adminController.updateUserRole);

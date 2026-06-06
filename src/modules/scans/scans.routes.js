@@ -7,6 +7,7 @@ const { body, param, query } = require('express-validator');
 const scansController = require('./scans.controller');
 const { authenticate } = require('../../middlewares/auth.middleware');
 const { uploadSingle } = require('../../middlewares/upload.middleware');
+const { checkDiagnosisLimit } = require('../../middlewares/subscription.middleware');
 
 const router = express.Router();
 
@@ -99,6 +100,7 @@ router.post(
   '/',
   uploadSingle('image'),
   scanValidation,
+  checkDiagnosisLimit,
   scansController.createScan
 );
 

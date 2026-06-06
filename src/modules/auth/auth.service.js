@@ -37,7 +37,13 @@ class AuthService {
       password: userData.password,
       name: userData.name,
       phone: userData.phone,
-      role: userData.role || 'farmer'
+      role: userData.role || 'farmer',
+      subscription: {
+      plan: 'trial',
+      status: 'active',
+      trialStartDate: new Date(),
+      trialEndDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    }
     });
 
     logger.info('User registered', { userId: user._id, phone: user.phone });
