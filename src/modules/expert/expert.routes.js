@@ -2,9 +2,9 @@
 const express   = require('express');
 const multer    = require('multer');
 const router    = express.Router();
-const ctrl      = require('../controllers/expert.controller');
-const { authenticate } = require('../middlewares/auth.middleware');
-const { requireRole }  = require('../middlewares/subscription.middleware');
+const ctrl      = require('./expert.controller');
+const { authenticate } = require('../../middlewares/auth.middleware');
+const { requireRole }  = require('../../middlewares/subscription.middleware');
 
 // Multer — memory storage (we stream directly to Cloudinary)
 const storage = multer.memoryStorage();
