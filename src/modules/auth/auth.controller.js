@@ -4,7 +4,7 @@
  */
 
 const authService = require('./auth.service');
-const subscriptionService = require('../services/subscription.service');
+const subscriptionService = require('../../services/subscription.service');
 const { successResponse } = require('../../utils/response');
 const { validationResult } = require('express-validator');
 const { AppError } = require('../../middlewares/error.middleware');

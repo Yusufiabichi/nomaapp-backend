@@ -11,6 +11,21 @@ AI-powered crop disease and pest diagnosis platform backend, designed for offlin
 - ☁️ Cloud storage abstraction (AWS S3 / Cloudinary)
 - 📊 Admin dashboard with system statistics
 
+POST   /expert/profile              → save Stage 1
+POST   /expert/documents            → upload to Cloudinary, save Stage 2
+GET    /expert/assessment/questions → fetch MCQ + image questions
+POST   /expert/assessment/submit    → score, store result, update stage
+GET    /expert/verification-status  → current stage + status (for dashboard)
+
+-- Admin routes (for later dashboard) --
+GET    /admin/experts               → list all pending experts
+GET    /admin/experts/:id           → view expert + documents
+PATCH  /admin/experts/:id/review    → approve or reject documents
+GET    /admin/assessment-questions  → list questions
+POST   /admin/assessment-questions  → create question
+PATCH  /admin/assessment-questions/:id → edit question
+DELETE /admin/assessment-questions/:id → delete question
+
 ## Tech Stack
 
 - Node.js (LTS)

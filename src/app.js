@@ -20,6 +20,7 @@ const scansRoutes = require('./modules/scans/scans.routes');
 const recommendationRoutes = require('./modules/recommendations/recommendations.routes');
 const syncRoutes = require('./modules/sync/sync.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
+const expertRoutes = require('./modules/expert/expert.routes');
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
 
@@ -83,6 +84,7 @@ app.use('/api/scans', scansRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/expert', expertRoutes);
 
 // Error handling
 app.use(notFoundHandler);
