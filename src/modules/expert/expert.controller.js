@@ -1,10 +1,10 @@
 // controllers/expert.controller.js
-const ExpertProfile   = require('/expertProfile.model');
-const AssessmentQuestion = require('../../assessment/assessmentQuestion.model');
+const ExpertProfile   = require('./expertProfile.model');
+const AssessmentQuestion = require('../assessment/assessmentQuestion.model');
 const { uploadBuffer } = require('../../services/cloudinary.service');
-const { notify }      = require('../../pushNotification.service');
+const { notify }      = require('../../services/pushNotification.service');
 const { AppError }    = require('../../middlewares/error.middleware');
-const { successResponse } = require('../utils/response');
+const { successResponse } = require('../../utils/response');
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
