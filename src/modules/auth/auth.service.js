@@ -9,6 +9,14 @@ const env = require('../../config/env');
 const { AppError } = require('../../middlewares/error.middleware');
 const logger = require('../../utils/logger');
 
+// auth.service.js — add at the top of the file
+
+const getTrialDaysRemaining = (trialEndDate) => {
+  if (!trialEndDate) return 0;
+  const diff = Math.ceil((new Date(trialEndDate) - new Date()) / (1000 * 60 * 60 * 24));
+  return Math.max(0, diff);
+};
+
 class AuthService {
   /**
    * Generate JWT token
@@ -89,7 +97,11 @@ class AuthService {
 
     return {
       user: user.toJSON(),
-      token
+      token,
+      meta: {
+        trialDaysRemaining: getTrialDaysRemaining(user.subscription.trialEndDate),
+        trialEndDate: user.subscription.trialEndDate,
+      }
     };
   }
 

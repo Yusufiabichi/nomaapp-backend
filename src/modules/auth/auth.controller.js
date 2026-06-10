@@ -8,6 +8,13 @@ const subscriptionService = require('../../services/subscription.service');
 const { successResponse } = require('../../utils/response');
 const { validationResult } = require('express-validator');
 const { AppError } = require('../../middlewares/error.middleware');
+// const { getTrialDaysRemaining } = require('../../utils/subscription');
+
+const getTrialDaysRemaining = (trialEndDate) => {
+  if (!trialEndDate) return 0;
+  const diff = Math.ceil((new Date(trialEndDate) - new Date()) / (1000 * 60 * 60 * 24));
+  return Math.max(0, diff);
+};
 
 class AuthController {
   /**
@@ -106,7 +113,25 @@ class AuthController {
    */
   async getMe(req, res, next) {
     try {
-      return successResponse(res, 200, { user: req.user });
+
+      console.log('req.user:', JSON.stringify(req.user, null, 2));
+      console.log('subscription:', req.user?.subscription);
+      console.log('trialEndDate:', req.user?.subscription?.trialEndDate);
+      // req.user is already attached by authenticate middleware
+      const { trialExpired } = await subscriptionService.checkAndExpireTrial(req.user);
+      const daysRemaining = getTrialDaysRemaining(req.user.subscription?.trialEndDate);
+
+      console.log('trialExpired:', trialExpired);
+      console.log('daysRemaining:', daysRemaining);
+
+      return successResponse(res, 200, {
+        user: req.user,
+        meta: {
+          trialExpired,
+          trialDaysRemaining: daysRemaining,
+          trialEndDate: req.user.subscription?.trialEndDate
+        }
+      }, 'User fetched');
     } catch (error) {
       next(error);
     }
