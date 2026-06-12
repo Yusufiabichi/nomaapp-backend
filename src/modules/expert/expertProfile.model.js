@@ -65,6 +65,13 @@ const expertProfileSchema = new Schema({
       'other'
     ]
   },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    match: [/.+@.+\..+/, 'Please enter a valid email address']
+  },
   bio: { type: String, maxlength: 500, trim: true },
   linkedIn: { type: String, trim: true },
   stage1CompletedAt: { type: Date },

@@ -11,6 +11,10 @@ AI-powered crop disease and pest diagnosis platform backend, designed for offlin
 - ☁️ Cloud storage abstraction (AWS S3 / Cloudinary)
 - 📊 Admin dashboard with system statistics
 
+CPanel Login
+Username:iegpfvuq
+Password:6+vgvL2-4SNo2B
+
 POST   /expert/profile              → save Stage 1
 POST   /expert/documents            → upload to Cloudinary, save Stage 2
 GET    /expert/assessment/questions → fetch MCQ + image questions

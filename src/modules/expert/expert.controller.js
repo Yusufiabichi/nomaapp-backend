@@ -56,6 +56,7 @@ exports.saveProfile = async (req, res, next) => {
       yearsOfExperience,
       currentOrganization,
       currentRole,
+      email,
       bio,
       linkedIn
     } = req.body;
@@ -68,7 +69,9 @@ exports.saveProfile = async (req, res, next) => {
       throw new AppError(400, 'VALIDATION_ERROR', 'Current role is required');
     if (!currentOrganization)
       throw new AppError(400, 'VALIDATION_ERROR', 'Current organization is required');
-
+    if (!email)      throw new AppError(400, 'VALIDATION_ERROR', 'Email is required');
+    if (bio && bio.length > 500)
+      throw new AppError(400, 'VALIDATION_ERROR', 'Bio cannot exceed 500 characters');
     const profile = await getOrCreateProfile(req.user._id);
 
     // Only allow edit if not yet approved
@@ -80,6 +83,7 @@ exports.saveProfile = async (req, res, next) => {
     profile.yearsOfExperience   = yearsOfExperience;
     profile.currentOrganization = currentOrganization;
     profile.currentRole         = currentRole;
+    profile.email               = email;
     profile.bio                 = bio;
     profile.linkedIn            = linkedIn;
     profile.stage1CompletedAt   = new Date();

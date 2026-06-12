@@ -64,6 +64,8 @@ const notify = {
       { screen: 'ExpertVerification', stage: '2' }
     ),
 
+
+
   assessmentPassed: (token, score) =>
     sendPushNotification(
       token,
@@ -78,6 +80,22 @@ const notify = {
       '📝 Assessment result',
       `You scored ${score}%. You need 70% to pass. ${attemptsLeft} attempt(s) remaining.`,
       { screen: 'ExpertVerification', stage: '3' }
+    ),
+
+  newCaseAssigned: (token, { farmerName, cropType, disease }) =>
+    sendPushNotification(
+      token,
+      '🌾 New case assigned',
+      `${farmerName} sent you a ${cropType} diagnosis${disease ? ` (${disease})` : ''} for review.`,
+      { screen: 'ExpertCases' }
+    ),
+
+  caseResolved: (token, { expertName }) =>
+    sendPushNotification(
+      token,
+      '✅ Your expert responded',
+      `${expertName} has responded to your case. Tap to view.`,
+      { screen: 'CaseDetail' }
     )
 };
 
