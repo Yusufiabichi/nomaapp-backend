@@ -131,3 +131,43 @@ userSchema.methods.changedPasswordAfter = function(jwtTimestamp) {
 };
 
 module.exports = mongoose.model('User', userSchema);
+
+// 2. Add these new fields anywhere in the schema (only relevant when role === 'admin'):
+
+const adminFieldsToAdd = `
+  // ── Admin-specific fields ──────────────────────────────────────────────────
+  adminRole: {
+    type: String,
+    enum: ['super_admin', 'moderator', 'reviewer'],
+    // No default — only set when role === 'admin'
+  },
+  permissions: {
+    type: [String],
+    default: []
+    // Ignored for super_admin (they have all permissions implicitly)
+    // Used for future moderator/reviewer roles
+  },
+  invitedBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+    // Tracks which admin invited this admin account
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+    // Allows deactivating admin access without deleting the account
+  }
+`;
+
+// 3. Add a pre-save hook or validation (optional but recommended):
+//    Ensure adminRole is only set when role === 'admin'
+userSchema.pre('save', function(next) {
+  if (this.role !== 'admin') {
+    this.adminRole = undefined;
+    this.permissions = [];
+  }
+  next();
+});
+
+
+module.exports = { adminFieldsToAdd }; // reference only — copy fields into user.model.js
